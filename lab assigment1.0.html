@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="libraryApp">
+<head>
+    <title>Library Management</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body ng-controller="LibraryController">
+
+    <h1>Library Book Count</h1>
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Count</th>
+        </tr>
+        <tr ng-repeat="item in library">
+            <td>{{item.category}}</td>
+            <td><input type="number" ng-model="item.count" /></td>
+        </tr>
+    </table>
+
+    <h2>Add New Category</h2>
+    <input type="text" ng-model="newCategory" placeholder="Category Name" />
+    <input type="number" ng-model="newCount" placeholder="Initial Count" />
+    <button ng-click="addCategory()">Add Category</button>
+
+    <script>
+        var app = angular.module('libraryApp', []);
+        app.controller('LibraryController', function($scope) {
+            $scope.library = [
+                { category: 'Fiction', count: 120 },
+                { category: 'Non-Fiction', count: 80 },
+                { category: 'Science', count: 150 },
+                { category: 'Mathematics', count: 70 }
+            ];
+
+            $scope.addCategory = function() {
+                if ($scope.newCategory && $scope.newCount) {
+                    var exists = $scope.library.some(function(item) {
+                        return item.category.toLowerCase() === $scope.newCategory.toLowerCase();
+                    });
+                    if (!exists) {
+                        $scope.library.push({ category: $scope.newCategory, count: $scope.newCount });
+                        $scope.newCategory = '';
+                        $scope.newCount = '';
+                    } else {
+                        alert('Category already exists!');
+                    }
+                }
+            };
+        });
+    </script>
+</body>
+</html>

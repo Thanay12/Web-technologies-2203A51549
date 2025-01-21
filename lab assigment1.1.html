@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="movieRentalApp">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Rental Store</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="app.js"></script>
+</head>
+<body ng-controller="MovieController">
+  <h1>Movie Rental Store</h1>
+  
+  <!-- Filters -->
+  <div>
+    <label for="genre">Filter by Genre:</label>
+    <select id="genre" ng-model="selectedGenre" ng-options="genre for genre in genres">
+      <option value="">All</option>
+    </select>
+    
+    <label for="year">Filter by Year:</label>
+    <select id="year" ng-model="selectedYear" ng-options="year for year in years">
+      <option value="">All</option>
+    </select>
+  </div>
+
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Genre</th>
+        <th>Year</th>
+        <th>Rental Price ($)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="movie in movies | filter:{ genre: selectedGenre, year: selectedYear }">
+        <td>{{ movie.title }}</td>
+        <td>{{ movie.genre }}</td>
+        <td>{{ movie.year }}</td>
+        <td>{{ getRentalPrice(movie.year) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  
+
+  <h2>Add New Movie</h2>
+  <form ng-submit="addMovie()">
+    <label for="title">Title:</label>
+    <input id="title" type="text" ng-model="newMovie.title" required />
+    <br />
+    <label for="genre">Genre:</label>
+    <input id="genre" type="text" ng-model="newMovie.genre" required />
+    <br />
+    <label for="year">Year:</label>
+    <input id="year" type="number" ng-model="newMovie.year" required />
+    <br />
+    <button type="submit">Add Movie</button>
+  </form>
+  <p style="color: red;" ng-if="errorMessage">{{ errorMessage }}</p>
+</body>
+</html>
+
